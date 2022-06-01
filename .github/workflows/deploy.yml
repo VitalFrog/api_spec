@@ -26,13 +26,14 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '16'
-    - run: cd redoc
-    - run: npx redoc-cli build -t redocTemplate.hbs --disableGoogleFont -o api-spec.html openapi.yml
+    - run: |
+        cd redoc
+        npx redoc-cli build -t redocTemplate.hbs --disableGoogleFont -o api-spec.html openapi.yml
 
     # Copy extra files to the wwwroot folder
     - run: |
-        cp ./openapi.yml ../docs/openapi.yml
-        cp ./api-spec.html ../docs/api-spec.html
+        cp ./openapi.yml ./docs/openapi.yml
+        cp ./redoc/api-spec.html ./docs/api-spec.html
     # Create a fresh git repo in docs
     - name: Init new repo in docs and commit generated files
       run: |
