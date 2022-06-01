@@ -54,6 +54,8 @@ jobs:
         # Destination branch to push changes
         # branch: # optional, default is master
         # Determines if force push is used
+        branch: gh-pages # The branch the action should deploy to.
+
         force: true
         # Directory to change to before pushing.
         directory: ./docs
