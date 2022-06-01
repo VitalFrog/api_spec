@@ -34,29 +34,10 @@ jobs:
     - run: |
         cp ./openapi.yml ./docs/openapi.yml
         cp ./redoc/api-spec.html ./docs/api-spec.html
-    # Create a fresh git repo in docs
-    - name: Init new repo in docs and commit generated files
-      run: |
-        cd ./docs
-        git init
-        git add -A
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git commit -m 'deploy'
-    # force push the contents of the wwwroot folder to the master branch
-    - run: git config --global --add safe.directory /github/workspace/docs
-    - name: Force push to master
-      uses: ad-m/github-push-action@v0.5.0
+    - name: Deploy
+      uses: crazy-max/ghaction-github-pages@v1
       with:
-        # Token for the repo. Can be passed in using $\{{ secrets.GITHUB_TOKEN }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        # Repository name to push. Default or empty value represents current github repository (${GITHUB_REPOSITORY})
-        # repository: # optional, default is
-        # Destination branch to push changes
-        # branch: # optional, default is master
-        # Determines if force push is used
-        branch: gh-pages # The branch the action should deploy to.
-
-        force: true
-        # Directory to change to before pushing.
-        directory: ./docs
+        target_branch: gh-pages
+        build_dir: docs
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_REPO_TOKEN }}
