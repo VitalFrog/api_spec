@@ -32,6 +32,7 @@ jobs:
 
     # Copy extra files to the wwwroot folder
     - run: |
+        mkdir docs
         cp ./openapi.yml ./docs/openapi.yml
         cp ./redoc/api-spec.html ./docs/api-spec.html
     - name: Deploy
