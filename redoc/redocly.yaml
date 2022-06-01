@@ -1,0 +1,13 @@
+organization: testing_redocly
+
+lint:
+  extends:
+    - recommended
+
+features.openapi:
+  schemaExpansionLevel: 2
+  generateCodeSamples:
+    languages:
+      - lang: curl
+      - lang: Python
+      - lang: Go
