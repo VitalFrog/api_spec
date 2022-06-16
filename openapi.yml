@@ -155,27 +155,78 @@ components:
       properties:
         metadata: 
           $ref: "#/components/schemas/ReportMetadata"
+    Countries:
+      type: object
+      required:
+        - list
+      properties:
+        mode:
+          type: string
+          description: How to handle the 'list'. If 'allow_list' than new countries is allowed, but the ones on the list. If 'block_list' then all countries are allowd.
+          default: block_list
+          enum:
+            - block_list
+            - allow_list
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/Country"
+    Target:
+      type: object
+      required:
+        - host
+        - paths
+      properties:
+        host: 
+          type: string
+          example: www.vitalfrog.com
+        scheme:
+          type: string
+          example: https
+          default: https
+        paths:
+          type: object
+          anyOf:
+            - $ref: "#/components/schemas/ManualPathSelection" 
+    ExtraHeadersConfig:
+      type: array
+      description: Additional headers to configure on the request. Mostly used for authentication
+      items:
+        type: object
+        required:
+          - header
+          - value
+        properties:
+          header:
+            type: string
+          value:
+            type: string
+    BasicAuth:
+      type: object
+      description: Basic auth credentials to configure
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string 
+    HttpConfig:
+      type: object
+      description: Additional http request configurations
+      properties:
+        extra_headers:
+          $ref: "#/components/schemas/ExtraHeadersConfig"
+        basic_auth:
+          $ref: "#/components/schemas/BasicAuth"
     ReportConfig: 
       type: object
       required:
         - target
       properties:
         countries: 
-          type: object
-          required:
-            - list
-          properties:
-            mode:
-              type: string
-              description: How to handle the 'list'. If 'allow_list' than new countries is allowed, but the ones on the list. If 'block_list' then all countries are allowd.
-              default: block_list
-              enum:
-                - block_list
-                - allow_list
-            list:
-              type: array
-              items:
-                $ref: "#/components/schemas/Country"
+          $ref: "#/components/schemas/Countries"
         performance_budgets_id:
           description: What performance budget to use. If none configured the default VitalFrog performance budgets will be used
           type: integer
@@ -187,50 +238,9 @@ components:
           items: 
             $ref: "#/components/schemas/Device"
         target: 
-          type: object
-          required:
-            - host
-            - paths
-          properties:
-            host: 
-              type: string
-              example: www.vitalfrog.com
-            scheme:
-              type: string
-              example: https
-              default: https
-            paths:
-              type: object
-              anyOf:
-                - $ref: "#/components/schemas/ManualPathSelection"
+          $ref: "#/components/schemas/Target"
         http:
-          type: object
-          description: Additional http request configurations
-          properties:
-            extra_headers:
-              type: array
-              description: Additional headers to configure on the request. Mostly used for authentication
-              items:
-                type: object
-                required:
-                  - header
-                  - value
-                properties:
-                  header:
-                    type: string
-                  value:
-                    type: string
-            basic_auth:
-              type: object
-              description: Basic auth credentials to configure
-              required:
-                - username
-                - password
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
+          $ref: "#/components/schemas/HttpConfig"
     AllPaths:
       type: object
       description: VitalFrog will crawl all paths it can find and run performance report on it
