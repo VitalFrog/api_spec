@@ -130,12 +130,16 @@ components:
       required:
         - config
         - async
+        - jsonl
       properties:
         config:
           $ref: "#/components/schemas/ReportConfig"
         async:
           type: boolean
           description: Run the report async and directly return with a 202
+        jsonl:
+          type: boolean
+          description: Return the response as jsonl. Allows to shwo results already while run is not finished. Only works for sync report
     SyncReport: 
       type: object
       required:
@@ -159,6 +163,7 @@ components:
       type: object
       required:
         - list
+        - mode
       properties:
         mode:
           type: string
@@ -188,19 +193,21 @@ components:
           type: object
           anyOf:
             - $ref: "#/components/schemas/ManualPathSelection" 
+    Header:
+      type: object
+      required:
+        - header
+        - value
+      properties:
+        header:
+          type: string
+        value:
+          type: string
     ExtraHeadersConfig:
       type: array
       description: Additional headers to configure on the request. Mostly used for authentication
       items:
-        type: object
-        required:
-          - header
-          - value
-        properties:
-          header:
-            type: string
-          value:
-            type: string
+        $ref: "#/components/schemas/Header"
     BasicAuth:
       type: object
       description: Basic auth credentials to configure
