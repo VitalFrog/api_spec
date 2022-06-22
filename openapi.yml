@@ -234,6 +234,12 @@ components:
       properties:
         countries: 
           $ref: "#/components/schemas/Countries"
+        Component: 
+          type: string
+          description: Component of you software we are testing. Helps to later find cross repo problems.
+        Version: 
+          type: string
+          description: Version of you software we are testing. Helps for later tracing of problems.
         performance_budgets_id:
           description: What performance budget to use. If none configured the default VitalFrog performance budgets will be used
           type: integer
