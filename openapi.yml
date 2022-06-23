@@ -22,20 +22,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateNewReportBody'
+              $ref: '#/components/schemas/ReportConfig'
       responses:
         '202':
-          description: New async report started. Runs async. Status can be fetched via uuid
+          description: New report started. Runs async. Status can be fetched via uuid
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AsyncReport"
-        '200':
-          description: New sync report created. Diretly returns report. May run for long time
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SyncReport"
+                $ref: "#/components/schemas/Report"
         default:
           description: unexpected error
           content:
@@ -63,7 +57,7 @@ paths:
           content:
             application/json:
              schema:
-               $ref: "#/components/schemas/SyncReport"
+               $ref: "#/components/schemas/Report"
         default:
           description: unexpected error
           content:
@@ -125,22 +119,7 @@ components:
       scheme: bearer
       bearerFormat: "firebaseAccessToken"
   schemas:
-    CreateNewReportBody:
-      type: object
-      required:
-        - config
-        - async
-        - jsonl
-      properties:
-        config:
-          $ref: "#/components/schemas/ReportConfig"
-        async:
-          type: boolean
-          description: Run the report async and directly return with a 202
-        jsonl:
-          type: boolean
-          description: Return the response as jsonl. Allows to shwo results already while run is not finished. Only works for sync report
-    SyncReport: 
+    Report: 
       type: object
       required:
         - metadata
@@ -152,13 +131,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PerformanceReport"
-    AsyncReport: 
-      type: object
-      required:
-        - metadata
-      properties:
-        metadata: 
-          $ref: "#/components/schemas/ReportMetadata"
+  
     Countries:
       type: object
       required:
@@ -375,6 +348,9 @@ components:
           type: string
           example: 1dea0c0e-e1e0-11ec-8fea-0242ac120002
         created:
+          type: string
+          format: date-time
+        finished:
           type: string
           format: date-time
         cost: 
